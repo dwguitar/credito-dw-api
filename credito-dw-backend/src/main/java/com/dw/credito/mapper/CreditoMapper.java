@@ -6,9 +6,10 @@ import com.dw.credito.dto.CreditoRequestDTO;
 import com.dw.credito.dto.CreditoResponseDTO;
 import com.dw.credito.model.Credito;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
-import org.springframework.web.bind.annotation.Mapping;
+
 
 @Mapper(componentModel = "spring")
 public interface CreditoMapper {
@@ -17,8 +18,10 @@ public interface CreditoMapper {
 
     CreditoDTO toDTO(Credito credito);
 
+    @Mapping(target = "id", ignore = true)
     Credito toEntity(CreditoDTO creditoDTO);
 
+    @Mapping(target = "id", ignore = true)
     Credito toEntity(CreditoRequestDTO creditoRequestDTO);
 
     @Mapping(target = "simplesNacional", source = "simplesNacional", qualifiedByName = "mapSimplesNacional")
