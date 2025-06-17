@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 import com.dw.credito.dto.CreditoDTO;
+import com.dw.credito.mapper.CreditoMapper;
 import com.dw.credito.model.Credito;
 import com.dw.credito.repository.CreditoRepository;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 
@@ -27,6 +29,9 @@ class CreditoServiceTest {
 
     @Mock
     private KafkaTemplate<String, String> kafkaTemplate;
+
+    @Mock
+    private CreditoMapper modelMapper;
 
     @InjectMocks
     private CreditoService creditoService;
@@ -61,7 +66,7 @@ class CreditoServiceTest {
                 BigDecimal.valueOf(5.0), BigDecimal.valueOf(30000.00),
                 BigDecimal.valueOf(5000.00), BigDecimal.valueOf(25000.00));
 
-        when(creditoRepository.findByNumeroCredito(numeroCredito)).thenReturn(credito);
+        when(creditoRepository.findByNumeroCredito(numeroCredito)).thenReturn(Optional.of(credito));
 
         CreditoDTO resultado = creditoService.buscarPorNumeroCredito(numeroCredito);
 

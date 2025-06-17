@@ -11,6 +11,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,9 +33,12 @@ public class CreditoService {
     }
 
     public CreditoDTO buscarPorNumeroCredito(String numeroCredito) {
-        Credito credito = creditoRepository.findByNumeroCredito(numeroCredito)
-                .orElseThrow(() -> new CreditoNotFoundException(numeroCredito));
-        return modelMapper.toDTO(credito);
+        Optional<Credito> optionalCredito = creditoRepository.findByNumeroCredito(numeroCredito);
+        if (!optionalCredito.isPresent()) {
+            optionalCredito.orElseThrow(() -> new CreditoNotFoundException(numeroCredito));
+        }
+
+        return modelMapper.toDTO(optionalCredito.get());
     }
 
 }
