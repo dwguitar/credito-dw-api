@@ -4,39 +4,38 @@ spring:
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
+    hikari:
+      minimum-idle: 2
+      maximum-pool-size: 10
+      idle-timeout: 30000
+      max-lifetime: 1800000
+      connection-timeout: 30000
 
   jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: validate
+      ddl-auto: none
     show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-        jdbc:
-          time_zone: UTC
 
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: 'localhost:9092'
     consumer:
       group-id: creditos-group
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       properties:
-        spring.json.trusted.packages: "*"
+        spring.json.trusted.packages: '*'
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
-
   sql:
     init:
       mode: always
-
 server:
   port: 8080
   servlet:
     context-path: /api
-
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
@@ -52,49 +51,50 @@ springdoc:
     show-extensions: true
     show-common-extensions: true
     tags:
-      - name: Créditos API
-        description: Operações com créditos constituídos
-
+      - name: CrÃ©ditos API
+        description: OperaÃ§Ãµes com crÃ©ditos constituÃ­dos
   api-docs:
     path: /v3/api-docs
     enabled: true
-
   default-consumes-media-type: application/json
   default-produces-media-type: application/json
-
   cache:
     disabled: true
-
   group-configs:
     - group: creditos-api
-      display-name: Créditos API
+      display-name: Crï¿½ditos API
       packages-to-scan: com.creditos.creditos.controller
       paths-to-match: /api/creditos/**
       paths-to-exclude: /api/creditos/admin/**
-
   version: 1.0.0
   api-info:
-    title: API de Créditos
-    description: Sistema de gerenciamento de créditos constituídos
-    version: ${springdoc.version}
+    title: API de CrÃ©ditos
+    description: Sistema de gerenciamento de crÃ©ditos constituÃ­dos
+    version: '${springdoc.version}'
     contact:
-      name: Suporte Técnico
-      url: https://creditos.com/suporte
+      name: Suporte Tï¿½cnico
+      url: 'https://creditos.com/suporte'
       email: suporte@creditos.com
     license:
-      name: Licença MIT
-      url: https://opensource.org/licenses/MIT
-
+      name: LicenÃ§a MIT
+      url: 'https://opensource.org/licenses/MIT'
   servers:
-    - url: http://localhost:8080/api
+    - url: 'http://localhost:8080/api'
       description: Servidor de Desenvolvimento
-    - url: https://api.creditos.com
-      description: Servidor de Produção
+    - url: 'https://api.creditos.com'
+      description: Servidor de ProduÃ§Ã£o
+
+
 
 logging:
   level:
     org:
-      hibernate: INFO
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
       springframework:
         web: INFO
         kafka: INFO

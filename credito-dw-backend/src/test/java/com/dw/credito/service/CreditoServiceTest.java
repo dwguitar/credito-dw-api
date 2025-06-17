@@ -3,6 +3,7 @@ package com.dw.credito.service;
 import static org.junit.jupiter.api.Assertions.*;
 
 
+import com.dw.credito.dto.CreditoDTO;
 import com.dw.credito.model.Credito;
 import com.dw.credito.repository.CreditoRepository;
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,7 @@ class CreditoServiceTest {
 
     @Test
     void buscarPorNfse_deveRetornarListaDeCreditos() {
-        // Arrange
+
         String numeroNfse = "7891011";
         List<Credito> creditos = List.of(
                 new Credito(1L, "123456", numeroNfse, LocalDate.now(),
@@ -43,10 +44,8 @@ class CreditoServiceTest {
 
         when(creditoRepository.findByNumeroNfse(numeroNfse)).thenReturn(creditos);
 
-        // Act
-        List<Credito> resultado = creditoService.buscarPorNfse(numeroNfse);
+        List<CreditoDTO> resultado = creditoService.buscarPorNfse(numeroNfse);
 
-        // Assert
         assertNotNull(resultado);
         assertEquals(1, resultado.size());
         assertEquals(numeroNfse, resultado.get(0).getNumeroNfse());
@@ -55,7 +54,7 @@ class CreditoServiceTest {
 
     @Test
     void buscarPorNumeroCredito_deveRetornarCredito() {
-        // Arrange
+
         String numeroCredito = "123456";
         Credito credito = new Credito(1L, numeroCredito, "7891011", LocalDate.now(),
                 BigDecimal.valueOf(1500.75), "ISSQN", true,
@@ -64,10 +63,8 @@ class CreditoServiceTest {
 
         when(creditoRepository.findByNumeroCredito(numeroCredito)).thenReturn(credito);
 
-        // Act
-        Credito resultado = creditoService.buscarPorNumeroCredito(numeroCredito);
+        CreditoDTO resultado = creditoService.buscarPorNumeroCredito(numeroCredito);
 
-        // Assert
         assertNotNull(resultado);
         assertEquals(numeroCredito, resultado.getNumeroCredito());
         verify(kafkaTemplate).send(eq("consultas-creditos"), anyString());
