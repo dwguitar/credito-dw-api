@@ -1,4 +1,4 @@
-package com.dw.credito;
+package com.dw.credito.controller;
 
 import com.dw.credito.dto.CreditoDTO;
 import com.dw.credito.service.CreditoService;

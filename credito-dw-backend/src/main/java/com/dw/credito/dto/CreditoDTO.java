@@ -2,10 +2,7 @@ package com.dw.credito.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -14,6 +11,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class CreditoDTO {
     private Long id;
     private String numeroCredito;
@@ -29,4 +27,8 @@ public class CreditoDTO {
     private BigDecimal valorFaturado;
     private BigDecimal valorDeducao;
     private BigDecimal baseCalculo;
+
+    public boolean getSimplesNacional() {
+        return simplesNacional;
+    }
 }
