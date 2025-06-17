@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: ./credito-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - credito-network
+
+  backend:
+    build: ./credito-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/credito_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    depends_on:
+      - db
+    networks:
+      - credito-network
+
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=credito_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - credito-network
+
+volumes:
+  postgres_data:
+
+networks:
+  credito-network:
+    driver: bridge

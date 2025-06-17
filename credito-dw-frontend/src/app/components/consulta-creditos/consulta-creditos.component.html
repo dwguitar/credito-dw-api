@@ -1,0 +1,36 @@
+<div class="container">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Consulta de Créditos Constituídos</mat-card-title>
+      </mat-card-header>
+      
+      <mat-card-content>
+        <div class="tipo-consulta">
+          <button mat-raised-button 
+                  [color]="tipoConsulta === 'nfse' ? 'primary' : ''"
+                  (click)="alterarTipoConsulta('nfse')">
+            Por NFS-e
+          </button>
+          <button mat-raised-button 
+                  [color]="tipoConsulta === 'credito' ? 'primary' : ''"
+                  (click)="alterarTipoConsulta('credito')">
+            Por Crédito
+          </button>
+        </div>
+  
+        <form [formGroup]="consultaForm" (ngSubmit)="consultar()">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>{{ tipoConsulta === 'nfse' ? 'Número da NFS-e' : 'Número do Crédito' }}</mat-label>
+            <input matInput formControlName="numero" required>
+            <mat-error *ngIf="consultaForm.get('numero')?.hasError('required')">
+              Campo obrigatório
+            </mat-error>
+          </mat-form-field>
+  
+          <button mat-raised-button color="primary" type="submit" [disabled]="!consultaForm.valid">
+            Consultar
+          </button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
