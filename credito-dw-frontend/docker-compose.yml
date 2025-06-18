@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   frontend:
-    build: ./credito-frontend
+    build: ./credito-dw-frontend
     ports:
       - "80:80"
     depends_on:
@@ -11,7 +11,7 @@ services:
       - credito-network
 
   backend:
-    build: ./credito-backend
+    build: ./credito-dw-backend
     ports:
       - "8080:8080"
     environment:

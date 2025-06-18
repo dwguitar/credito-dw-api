@@ -100,3 +100,7 @@ logging:
         kafka: INFO
     com:
       creditos: DEBUG
+
+sonar:
+  gradle:
+    skipCompile: true
