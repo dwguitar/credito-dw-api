@@ -12,6 +12,8 @@ import { MaterialModule } from './shared/material.module';
 import { ToastrModule } from 'ngx-toastr';
 import { ConsultaCreditosComponent } from './components/consulta-creditos/consulta-creditos.component';
 import { ResultadoConsultaComponent } from './components/resultado-consulta/resultado-consulta.component';
+import {MatTableModule} from "@angular/material/table";
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 @NgModule({
   declarations: [
@@ -26,6 +28,8 @@ import { ResultadoConsultaComponent } from './components/resultado-consulta/resu
     HttpClientModule,
     ReactiveFormsModule,
     MaterialModule,
+    MatTableModule,
+    MatPaginatorModule,
     ToastrModule.forRoot()
   ],
   providers: [],

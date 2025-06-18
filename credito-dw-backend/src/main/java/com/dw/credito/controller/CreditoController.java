@@ -7,8 +7,13 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -55,5 +60,29 @@ public class CreditoController {
             @PathVariable String numeroCredito) {
         CreditoDTO credito = creditoService.buscarPorNumeroCredito(numeroCredito);
         return ResponseEntity.ok(credito);
+    }
+
+    @Operation(
+            summary = "Buscar créditos por número da NFS-e (Paginado)",
+            description = "Retorna uma página de créditos vinculados ao número da NFS-e informado."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Consulta realizada com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Créditos não encontrados"),
+            @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
+    })
+    @GetMapping("/pages/{numeroNfse}")
+    public ResponseEntity<Page<CreditoDTO>> getByNumeroNfse(
+            @Parameter(description = "Número da NFS-e", example = "123456789")
+            @PathVariable String numeroNfse,
+            @Parameter(hidden = true) Pageable pageable) {
+
+        Page<CreditoDTO> creditos = creditoService.buscarPorNfsePaginado(numeroNfse, pageable);
+
+        if (creditos.hasContent()) {
+            return ResponseEntity.ok(creditos);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

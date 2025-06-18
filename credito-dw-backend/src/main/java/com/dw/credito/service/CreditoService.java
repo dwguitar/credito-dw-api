@@ -7,6 +7,8 @@ import com.dw.credito.model.Credito;
 import com.dw.credito.repository.CreditoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +40,13 @@ public class CreditoService {
                 .collect(Collectors.toList());
     }
 
+    public Page<CreditoDTO> buscarPorNfsePaginado(String numeroNfse, Pageable pageable) {
+
+        publicarEventoKafka("Consulta Paginada por NFS-e: " + numeroNfse);
+        return creditoRepository.findByNumeroNfse(numeroNfse, pageable)
+                .map(creditoMapper::toDTO);
+    }
+
     public CreditoDTO buscarPorNumeroCredito(String numeroCredito) {
         Credito credito = creditoRepository.findByNumeroCredito(numeroCredito)
                 .orElseThrow(() -> new CreditoNotFoundException("Crédito não encontrado com número: " + numeroCredito));
@@ -56,4 +65,5 @@ public class CreditoService {
         kafkaTemplate.send(TOPICO, mensagem);
          log.info("Evento Kafka enviado para tópico {}: {}", TOPICO, mensagem);
     }
+
 }
