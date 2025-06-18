@@ -42,7 +42,7 @@ dependencies {
 	annotationProcessor("org.projectlombok:lombok-mapstruct-binding:0.2.0")
 
 	// Documentação
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
 
 	// Banco de dados
 	runtimeOnly("org.postgresql:postgresql")

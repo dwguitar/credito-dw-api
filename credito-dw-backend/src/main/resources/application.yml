@@ -63,7 +63,7 @@ springdoc:
   group-configs:
     - group: creditos-api
       display-name: Créditos API
-      packages-to-scan: com.creditos.creditos.controller
+      packages-to-scan: com.dw.credito.controller
       paths-to-match: /api/v1/creditos/**
       paths-to-exclude: /api/v1/creditos/admin/**
   version: 1.0.0
