@@ -14,14 +14,10 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:4200")
+                        .allowedOrigins("http://localhost:4200") // Somente o frontend
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                         .allowedHeaders("*")
-                        .exposedHeaders(
-                                "Authorization",
-                                "Content-Type",
-                                "Content-Disposition"
-                        )
+                        .exposedHeaders("Authorization", "Content-Type", "Content-Disposition")
                         .allowCredentials(true)
                         .maxAge(3600);
             }

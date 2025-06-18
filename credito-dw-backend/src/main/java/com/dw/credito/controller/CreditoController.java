@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/creditos")
+@RequestMapping("/api/v1/creditos")
 @Tag(name = "Créditos", description = "API para consulta de créditos")
 public class CreditoController {
 

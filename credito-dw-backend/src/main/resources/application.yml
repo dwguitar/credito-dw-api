@@ -35,7 +35,7 @@ spring:
 server:
   port: 8080
   servlet:
-    context-path: /api
+    context-path: /
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
@@ -54,7 +54,7 @@ springdoc:
       - name: Créditos API
         description: Operações com créditos constituídos
   api-docs:
-    path: /v3/api-docs
+    path: /api/v3/api-docs
     enabled: true
   default-consumes-media-type: application/json
   default-produces-media-type: application/json
@@ -64,8 +64,7 @@ springdoc:
     - group: creditos-api
       display-name: Créditos API
       packages-to-scan: com.dw.credito.controller
-      paths-to-match: /api/v1/creditos/**
-      paths-to-exclude: /api/v1/creditos/admin/**
+
   version: 1.0.0
   api-info:
     title: API de Créditos
