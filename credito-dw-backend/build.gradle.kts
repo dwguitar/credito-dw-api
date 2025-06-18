@@ -74,17 +74,12 @@ jacoco {
 	reportsDirectory.set(layout.buildDirectory.dir("reports/jacoco"))
 }
 
-// Task para fazer merge dos arquivos .exec de todas as execuções de teste
-tasks.register<JacocoMerge>("jacocoMergeExecFiles") {
-	executionData.setFrom(fileTree(buildDir).include("**/jacoco/*.exec"))
-	destinationFile = file("${buildDir}/jacoco/merged.exec")
-}
-
 // Task para gerar o relatório combinado
 tasks.register<JacocoReport>("jacocoMergedReport") {
-	dependsOn("test", "jacocoMergeExecFiles")
+	dependsOn("test")
 
-	executionData.setFrom(file("${buildDir}/jacoco/merged.exec"))
+	// Use all execution data files (automatically merged by JaCoCo)
+	executionData.setFrom(fileTree(buildDir).include("**/jacoco/*.exec"))
 
 	sourceDirectories.setFrom(files("src/main/java", "src/main/kotlin"))
 	classDirectories.setFrom(
@@ -99,29 +94,10 @@ tasks.register<JacocoReport>("jacocoMergedReport") {
 	reports {
 		xml.required.set(true)
 		html.required.set(true)
+		xml.outputLocation.set(layout.buildDirectory.file("reports/jacoco/jacocoMergedReport.xml"))
 	}
 }
 
-// Coverage Verification sobre o relatório mergeado
-tasks.register<JacocoReport>("jacocoTestCoverageVerification") {
-	dependsOn("jacocoMergedReport")
-	executionData.setFrom(file("${buildDir}/jacoco/merged.exec"))
-
-	sourceDirectories.setFrom(files("src/main/java", "src/main/kotlin"))
-	classDirectories.setFrom(
-		fileTree("${buildDir}/classes/java/main") {
-			include("com/dw/credito/controller/**", "com/dw/credito/service/**")
-		},
-		fileTree("${buildDir}/classes/kotlin/main") {
-			include("com/dw/credito/controller/**", "com/dw/credito/service/**")
-		}
-	)
-
-	reports {
-		xml.required.set(false)
-		html.required.set(false)
-	}
-}
 
 tasks.named("sonar") {
 	dependsOn(tasks.compileJava, tasks.named("jacocoMergedReport"))
