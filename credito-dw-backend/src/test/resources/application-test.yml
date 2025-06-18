@@ -1,3 +1,8 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/creditosdb
@@ -29,13 +34,11 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
   sql:
     init:
       mode: always
-server:
-  port: 8080
-  servlet:
-    context-path: /api
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
@@ -62,7 +65,7 @@ springdoc:
     disabled: true
   group-configs:
     - group: creditos-api
-      display-name: Cr�ditos API
+      display-name: Créditos API
       packages-to-scan: com.creditos.creditos.controller
       paths-to-match: /api/creditos/**
       paths-to-exclude: /api/creditos/admin/**
@@ -70,9 +73,9 @@ springdoc:
   api-info:
     title: API de Créditos
     description: Sistema de gerenciamento de créditos constituídos
-    version: '${springdoc.version}'
+    version: 1.0.0
     contact:
-      name: Suporte T�cnico
+      name: Suporte Técnico
       url: 'https://creditos.com/suporte'
       email: suporte@creditos.com
     license:
@@ -81,10 +84,6 @@ springdoc:
   servers:
     - url: 'http://localhost:8080/api'
       description: Servidor de Desenvolvimento
-    - url: 'https://api.creditos.com'
-      description: Servidor de Produção
-
-
 
 logging:
   level:
@@ -100,3 +99,7 @@ logging:
         kafka: INFO
     com:
       creditos: DEBUG
+
+sonar:
+  gradle:
+    skipCompile: true

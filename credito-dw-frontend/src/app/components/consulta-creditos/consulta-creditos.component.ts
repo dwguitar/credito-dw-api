@@ -32,9 +32,9 @@ export class ConsultaCreditosComponent {
   consultar() {
     if (this.consultaForm.valid) {
       const numero = this.consultaForm.get('numero')?.value;
-      
+
       if (this.tipoConsulta === 'nfse') {
-        this.creditoService.buscarPorNfse(numero).subscribe({
+        this.creditoService.buscarPorNfse('7891011').subscribe({
           next: (resultados) => {
             this.router.navigate(['/resultado'], { state: { resultados } });
           },

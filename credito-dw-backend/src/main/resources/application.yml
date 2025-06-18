@@ -62,17 +62,17 @@ springdoc:
     disabled: true
   group-configs:
     - group: creditos-api
-      display-name: Cr�ditos API
-      packages-to-scan: com.creditos.creditos.controller
-      paths-to-match: /api/creditos/**
-      paths-to-exclude: /api/creditos/admin/**
+      display-name: Créditos API
+      packages-to-scan: com.dw.credito.controller
+      paths-to-match: /api/v1/creditos/**
+      paths-to-exclude: /api/v1/creditos/admin/**
   version: 1.0.0
   api-info:
     title: API de Créditos
     description: Sistema de gerenciamento de créditos constituídos
     version: '${springdoc.version}'
     contact:
-      name: Suporte T�cnico
+      name: Suporte Técnico
       url: 'https://creditos.com/suporte'
       email: suporte@creditos.com
     license:
@@ -100,3 +100,8 @@ logging:
         kafka: INFO
     com:
       creditos: DEBUG
+
+
+sonar:
+  gradle:
+    skipCompile: true
