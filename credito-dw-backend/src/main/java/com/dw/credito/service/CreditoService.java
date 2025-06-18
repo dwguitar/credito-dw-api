@@ -1,37 +1,37 @@
 package com.dw.credito.service;
 
-
+import com.dw.credito.dto.CreditoDTO;
+import com.dw.credito.mapper.CreditoMapper;
 import com.dw.credito.model.Credito;
 import com.dw.credito.repository.CreditoRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class CreditoService {
+
     private final CreditoRepository creditoRepository;
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final CreditoMapper creditoMapper;
 
-    public List<Credito> buscarPorNfse(String numeroNfse) {
-        kafkaTemplate.send("consultas-creditos", "Consulta por NFS-e: " + numeroNfse);
-        return creditoRepository.findByNumeroNfse(numeroNfse);
+    public List<CreditoDTO> buscarPorNfse(String numeroNfse) {
+        return creditoRepository.findByNumeroNfse(numeroNfse).stream()
+                .map(creditoMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
-    public Credito buscarPorNumeroCredito(String numeroCredito) {
-        kafkaTemplate.send("consultas-creditos", "Consulta por Crédito: " + numeroCredito);
-        return creditoRepository.findByNumeroCredito(numeroCredito);
+    public CreditoDTO buscarPorNumeroCredito(String numeroCredito) {
+        Optional<Credito> credito = creditoRepository.findByNumeroCredito(numeroCredito);
+        return credito.map(creditoMapper::toDTO)
+                .orElseThrow(() -> new RuntimeException("Crédito não encontrado"));
     }
 
-//    @Transactional(readOnly = true)
-//    public Credito buscarPorNumeroCredito(String numeroCredito) {
-//        log.info("Buscando crédito por número: {}", numeroCredito);
-//
-//        return creditoRepository.findByNumeroCredito(numeroCredito)
-//                .orElseThrow(() -> new CreditoNaoEncontradoException(
-//                        "Crédito não encontrado com o número: " + numeroCredito));
-//    }
+    public CreditoDTO salvar(Credito credito) {
+        Credito creditoSalvo = creditoRepository.save(credito);
+        return creditoMapper.toDTO(creditoSalvo);
+    }
 }
