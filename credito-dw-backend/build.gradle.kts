@@ -48,6 +48,10 @@ dependencies {
 	runtimeOnly("org.postgresql:postgresql")
 	testImplementation("com.h2database:h2")
 
+	//Cache
+	implementation("org.springframework.boot:spring-boot-starter-cache")
+	implementation("com.github.ben-manes.caffeine:caffeine:3.1.8")
+
 	// Testes
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.kafka:spring-kafka-test")

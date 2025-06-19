@@ -11,4 +11,16 @@ export interface Credito {
     valorDeducao: number;
     baseCalculo: number;
   }
-  
+
+export interface Page<T> {
+  content: T[];
+  totalElements: number;
+  totalPages: number;
+  number: number;  // Número da página atual
+  size: number;    // Tamanho da página
+  numberOfElements: number;
+  first: boolean;
+  last: boolean;
+  empty: boolean;
+}
+

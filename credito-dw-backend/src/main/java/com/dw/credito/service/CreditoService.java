@@ -7,6 +7,8 @@ import com.dw.credito.model.Credito;
 import com.dw.credito.repository.CreditoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -26,6 +28,7 @@ public class CreditoService {
 
     private static final String TOPICO = "consultas-creditos";
 
+    @Cacheable(value = "creditosPorNfse", key = "#numeroNfse")
     public List<CreditoDTO> buscarPorNfse(String numeroNfse) {
         List<Credito> creditos = creditoRepository.findByNumeroNfse(numeroNfse);
 
@@ -40,6 +43,7 @@ public class CreditoService {
                 .collect(Collectors.toList());
     }
 
+    @Cacheable(value = "creditosPorNfse", key = "#numeroNfse + '-' + #pageable.pageNumber + '-' + #pageable.pageSize")
     public Page<CreditoDTO> buscarPorNfsePaginado(String numeroNfse, Pageable pageable) {
 
         publicarEventoKafka("Consulta Paginada por NFS-e: " + numeroNfse);
@@ -47,6 +51,7 @@ public class CreditoService {
                 .map(creditoMapper::toDTO);
     }
 
+    @Cacheable(value = "creditoPorNumero", key = "#numeroCredito")
     public CreditoDTO buscarPorNumeroCredito(String numeroCredito) {
         Credito credito = creditoRepository.findByNumeroCredito(numeroCredito)
                 .orElseThrow(() -> new CreditoNotFoundException("Crédito não encontrado com número: " + numeroCredito));
@@ -56,6 +61,7 @@ public class CreditoService {
         return creditoMapper.toDTO(credito);
     }
 
+    @CacheEvict(value = {"creditosPorNfse", "creditoPorNumero"}, allEntries = true)
     public CreditoDTO salvar(Credito credito) {
         Credito creditoSalvo = creditoRepository.save(credito);
         return creditoMapper.toDTO(creditoSalvo);
